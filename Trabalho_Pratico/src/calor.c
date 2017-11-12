@@ -51,7 +51,7 @@ void iteration(){
             G2[i][j]) / 5;
             G2[i][j] = aux;
     }
-        
+asdasdas
  }
     
 }

@@ -1,0 +1,5 @@
+https://stackoverflow.com/questions/17259877/1d-or-2d-array-whats-faster
+
+
+Acesso a Matriz 1 D
+

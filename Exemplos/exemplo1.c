@@ -124,7 +124,7 @@ double relax_gauss (double *u, unsigned sizex, unsigned sizey)
 
 	#pragma omp parallel for reduction(+:sum) private(diff)
 	for (int ii=0; ii<nbx; ii++) // Div das threads por linhas     i -> linhas; j colunas; ii-> chunk atual de linhas; jj-> chunk atual  de colunas
-		for (int jj=0; jj<nby; jj++) // Div das threads por colunas ()
+		for (int jj=0; jj<nby; jj++) // Div das threads por colunas
 			for (int i=1+ii*bx; i<=min((ii+1)*bx, sizex-2); i++) // 
 				for (int j=1+jj*by; j<=min((jj+1)*by, sizey-2); j++) {
 					unew= 0.25 * (	u[ i*sizey     + (j-1) ]+  // left

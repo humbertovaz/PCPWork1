@@ -27,12 +27,13 @@ void fillMatrix(){
 void iteration(){
  for(int i=1; i<N-1; i++){ 
     for(int j=1; j<N-1; j++){
-        G1[i][j]= (
+        aux= (
             G2[i-1][j]+
             G2[i+1][j]+
             G2[i][j-1]+
             G2[i][j+1]+
             G2[i][j]) / 5;
+            G1[i][j]=aux
     }
  }
     
@@ -58,15 +59,14 @@ void iterationSequential(){
 }
 void iterationParallel(){
     for(int i=1; i<N-1; i++){ 
-        #pragma omp parallel for private (aux)
+        #pragma omp parallel for
         for(int j=1; j<N-1; j++){
-            aux = (
+            G1[i][j] = 0.2*(
                 G2[i-1][j]+
                 G2[i+1][j]+
                 G2[i][j-1]+
                 G2[i][j+1]+
-                G2[i][j]) / 5);
-                G1[i][j] = aux;
+                G2[i][j]);
         }
 
     }
@@ -80,9 +80,10 @@ void iterationParallel(){
 int main(int argc, char const *argv[]){
     clock_t start_t, end_t, total_t;
     clearcache();
-    fillMatrix ();
+    
 
 #ifdef D_SEQUENTIAL
+    fillMatrix ();
     //Collects the start time
     start_t = clock();
     printf("Starting of the program, start_t = %ld\n", start_t);
@@ -97,6 +98,7 @@ int main(int argc, char const *argv[]){
 #endif 
 
 #ifdef D_PARALLEL
+    fillMatrix ();
     //Collects the start time
     start_t = clock();
     printf("Starting of the program, start_t = %ld\n", start_t);

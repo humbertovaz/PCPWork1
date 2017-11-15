@@ -209,12 +209,11 @@ int main ( int argc, char *argv[] )
   printf ( "\n" );
   printf ( " Iteration  Change\n" );
   printf ( "\n" );
-  wtime = omp_get_wtime ( );
+ 
 
   diff = epsilon;
 
-  while ( epsilon <= diff )
-  {
+while ( epsilon <= diff ){
 # pragma omp parallel shared ( u, w ) private ( i, j )
     {
 /*
@@ -232,6 +231,7 @@ int main ( int argc, char *argv[] )
   Determine the new estimate of the solution at the interior points.
   The new solution W is the average of north, south, east and west neighbors.
 */
+ wtime = omp_get_wtime ( );
 # pragma omp for
       for ( i = 1; i < M - 1; i++ )
       {
@@ -241,6 +241,8 @@ int main ( int argc, char *argv[] )
         }
       }
     }
+wtime = omp_get_wtime ( ) - wtime;
+
 /*
   C and C++ cannot compute a maximum as a reduction operation.
 
@@ -273,13 +275,12 @@ int main ( int argc, char *argv[] )
     }
 
     iterations++;
-    if ( iterations == iterations_print )
-    {
+    if ( iterations == iterations_print ){
       printf ( "  %8d  %f\n", iterations, diff );
       iterations_print = 2 * iterations_print;
     }
-  } 
-  wtime = omp_get_wtime ( ) - wtime;
+} 
+  
 
   printf ( "\n" );
   printf ( "  %8d  %f\n", iterations, diff );

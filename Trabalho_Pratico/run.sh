@@ -2,13 +2,13 @@
 
 echo "Compiling..."
 
-export SEQUENTIAL=yes
-export PARALLEL=yes
+#export SEQUENTIAL=yes
+#export PARALLEL=yes
 
-make
+gcc src/calor.c -O3 -fopenmp -Wall -Wextra -std=c99 -Wno-unused-parameter -o src/calor
 
 echo "Running the tests"
 
-./bin/calor.c
+./src/calor
 
 

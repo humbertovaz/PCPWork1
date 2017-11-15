@@ -203,7 +203,7 @@ int main ( int argc, char *argv[] )
   printf ( "\n" );
   printf ( " Iteration  Change\n" );
   printf ( "\n" );
-  wtime = omp_get_wtime ( );
+
 
   diff = epsilon;
 
@@ -234,7 +234,7 @@ int main ( int argc, char *argv[] )
   bx = M/nbx + ((M%nbx) ? 1 : 0); // linha do bloco (quantas linhas fica cada thread)
   nby = 2;                // Nr de chunks por thread          
   by = N/nby;             // coluna do bloco (quantas tem cada bloco)
-
+wtime = omp_get_wtime ( );
   #pragma omp parallel for //reduction(+:sum) private(diff)
   //  i -> linhas; j colunas; ii-> chunk atual de linhas; jj-> chunk atual  de colunas
   for (int ii=0; ii<nbx; ii++) { // Criar #nbx threads    
@@ -254,6 +254,7 @@ int main ( int argc, char *argv[] )
       }
     }
   }
+wtime = omp_get_wtime ( ) - wtime;
 }
 /*      
 # pragma omp for
@@ -305,7 +306,6 @@ int main ( int argc, char *argv[] )
       iterations_print = 2 * iterations_print;
     }
   } 
-  wtime = omp_get_wtime ( ) - wtime;
 
   printf ( "\n" );
   printf ( "  %8d  %f\n", iterations, diff );

@@ -3,8 +3,6 @@
 # include <math.h>
 # include <omp.h>
 
-int main ( int argc, char *argv[] );
-
 /******************************************************************************/
 
 int main ( int argc, char *argv[] )
@@ -117,6 +115,14 @@ int main ( int argc, char *argv[] )
   double u[M][N];
   double w[M][N];
   double wtime;
+  
+  double clearcache [30000000];
+
+  void clearCache (void) {
+    for (unsigned i = 0; i < 30000000; ++i)
+      clearcache[i] = i;
+  }
+
 
   printf ( "\n" );
   printf ( "HEATED_PLATE_OPENMP\n" );
@@ -131,6 +137,7 @@ int main ( int argc, char *argv[] )
 /*
   Set the boundary values, which don't change. 
 */
+  clearCache();
   mean = 0.0;
 
 #pragma omp parallel shared ( w ) private ( i, j )
@@ -230,7 +237,7 @@ int main ( int argc, char *argv[] )
       {
         for ( j = 1; j < N - 1; j++ )
         {
-          w[i][j] = ( u[i-1][j] + u[i+1][j] + u[i][j-1] + u[i][j+1] ) / 4.0;
+          w[i][j] = ( u[i-1][j] + u[i+1][j] + u[i][j-1] + u[i][j+1] + u[i][j] ) / 5.0;
         }
       }
     }

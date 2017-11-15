@@ -3,7 +3,7 @@
 # include <math.h>
 # include <omp.h>
 
-//int main ( int argc, char *argv[] );
+int main ( int argc, char *argv[] );
 
 /******************************************************************************/
 
@@ -105,7 +105,7 @@ int main ( int argc, char *argv[] )
 {
 # define M 500
 # define N 500
-#define min(a,b) ( ((a) < (b)) ? (a) : (b) )
+
   double diff;
   double epsilon = 0.001;
   int i;
@@ -225,28 +225,6 @@ int main ( int argc, char *argv[] )
   Determine the new estimate of the solution at the interior points.
   The new solution W is the average of north, south, east and west neighbors.
 */
-
-
-  int nbx, bx, nby, by;
-
-  nbx = omp_get_max_threads();      // NR de threads 
-  bx = M/nbx + ((M%nbx) ? 1 : 0); // linha do bloco (quantas linhas fica cada thread)
-  nby = 2;                // Nr de chunks por thread          
-  by = N/nby;             // coluna do bloco (quantas tem cada bloco)
-
-  #pragma omp parallel for //reduction(+:sum) private(diff)
-  //  i -> linhas; j colunas; ii-> chunk atual de linhas; jj-> chunk atual  de colunas
-  for (int ii=0; ii<nbx; ii++) { // Criar #nbx threads    
-    for (int jj=0; jj<nby; jj++)  { // Limitar chunksize por thread
-      for (int i=1+ii*bx; i<=min((ii+1)*bx, M-2); i++) {      // cada i é uma linha do bloco
-        for (int j=1+jj*by; j<=min((jj+1)*by, N-2); j++) {    // cada j é uma coluna do bloco
-          w[i][j]= 0.2 * (u[i][j] + u[i][(j-1)]+  u[i][(j+1)]+ u[(i-1)][j]+ u[(i+1)][j]);
-        }
-      }
-    }
-  }
-}
-/*      
 # pragma omp for
       for ( i = 1; i < M - 1; i++ )
       {
@@ -255,7 +233,7 @@ int main ( int argc, char *argv[] )
           w[i][j] = ( u[i-1][j] + u[i+1][j] + u[i][j-1] + u[i][j+1] ) / 4.0;
         }
       }
-    }*/
+    }
 /*
   C and C++ cannot compute a maximum as a reduction operation.
 

@@ -3,6 +3,7 @@
 #include <time.h>
 #include <omp.h>
 
+#define M 10
 #define N 10
 int G1[N][N];
 int G2[N][N];
@@ -16,39 +17,22 @@ void clearCache (void) {
 
 void fillMatrix(){
     int i,j;
-    for(i = 0; i < N; i++){
+    for(i = 0; i < M; i++){
         for(int j = 0; j < N; j++)
             G2[i][j]= (float) rand() / RAND_MAX;
         
     
     }
 }
-/*
-void iteration(){
- for(int i=1; i<N-1; i++){ 
-    for(int j=1; j<N-1; j++){
-        aux= (
-            G2[i-1][j]+
-            G2[i+1][j]+
-            G2[i][j-1]+
-            G2[i][j+1]+
-            G2[i][j]) / 5;
-            G1[i][j]=aux
-    }
- }
-    
-}
-*/
-
 void iterationSequential(){
     for(int i=1; i<N-1; i++){ 
         for(int j=1; j<N-1; j++){
-            G1[i][j]=(
+            G1[i][j]=0.2*( 
                 G2[i-1][j]+
                 G2[i+1][j]+
                 G2[i][j-1]+
                 G2[i][j+1]+
-                G2[i][j]) / 5;
+                G2[i][j]);
         }   
     }
     //Copy the G1 array calculated values back to the G2 array

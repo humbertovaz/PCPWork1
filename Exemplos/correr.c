@@ -3,7 +3,6 @@
 # include <math.h>
 # include <omp.h>
 
-int main ( int argc, char *argv[] );
 
 /******************************************************************************/
 
@@ -105,6 +104,8 @@ int main ( int argc, char *argv[] )
 {
 # define M 500
 # define N 500
+#define min(a,b) ( ((a) < (b)) ? (a) : (b) )
+
 
   double diff;
   double epsilon = 0.001;
@@ -240,11 +241,11 @@ int main ( int argc, char *argv[] )
     for (int jj=0; jj<nby; jj++)  { // Limitar chunksize por thread
       for (int i=1+ii*bx; i<=min((ii+1)*bx, M-2); i++) {      // cada i é uma linha do bloco
         for (int j=1+jj*by; j<=min((jj+1)*by, N-2); j++) {    // cada j é uma coluna do bloco
-          g1[i][j]= 0.2 * (g2[i][j] //itself  
-                   g2[i][(j-1)]+  // left
-                         g2[i][(j+1)]+  // right
-                         g2[(i-1)][j]+  // top
-                         g2[(i+1)] [j]); // bottom
+          w[i][j]= 0.2 * (u[i][j]+ //itself  
+                   u[i][(j-1)]+  // left
+                         u[i][(j+1)]+  // right
+                         u[(i-1)][j]+  // top
+                         u[(i+1)] [j]); // bottom
 
         
         //  diff = utmp[i*N+j] - u[i*N + j];

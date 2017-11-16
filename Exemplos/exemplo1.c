@@ -12,10 +12,10 @@ double relax_jacobi (double *u, double *utmp, unsigned sizex, unsigned sizey)
 	double diff, sum=0.0;
 	int nbx, bx, nby, by;
 
-	nbx = omp_get_max_threads();//NB;
-	bx = sizex/nbx + ((sizex%nbx) ? 1 : 0);//sizex/nbx; chunksize p/ thread
-	nby = 1;//NB; Nr de bytes
-	by = sizey/nby;
+	nbx = omp_get_max_threads();			// NR de threads 
+	bx = sizex/nbx + ((sizex%nbx) ? 1 : 0); // chunksize de cada linha  -> cada thread fica responsável por um chunk 
+	nby = 2; 								// Nr de chunks por thread 					
+	by = sizey/nby;							// chunksize em cada coluna
 
 	#pragma omp parallel for reduction(+:sum) private(diff)
 	for (int ii=0; ii<nbx; ii++) {
@@ -116,16 +116,16 @@ double relax_gauss (double *u, unsigned sizex, unsigned sizey)
 // */
 
 //*
-	nbx = omp_get_max_threads();
-	bx = sizex/nbx + ((sizex%nbx) ? 1 : 0);
-	nby = 1;
-	by = sizey/nby;
+	nbx = omp_get_max_threads();			// NR de threads 
+	bx = sizex/nbx + ((sizex%nbx) ? 1 : 0); // chunksize de cada linha  -> cada thread fica responsável por um chunk 
+	nby = 2; 								// Nr de chunks por thread 					
+	by = sizey/nby;							// chunksize em cada coluna
 // */
 
 	#pragma omp parallel for reduction(+:sum) private(diff)
-	for (int ii=0; ii<nbx; ii++)
-		for (int jj=0; jj<nby; jj++) 
-			for (int i=1+ii*bx; i<=min((ii+1)*bx, sizex-2); i++) 
+	for (int ii=0; ii<nbx; ii++) // Div das threads por linhas     i -> linhas; j colunas; ii-> chunk atual de linhas; jj-> chunk atual  de colunas
+		for (int jj=0; jj<nby; jj++) // Div das threads por colunas
+			for (int i=1+ii*bx; i<=min((ii+1)*bx, sizex-2); i++) // 
 				for (int j=1+jj*by; j<=min((jj+1)*by, sizey-2); j++) {
 					unew= 0.25 * (	u[ i*sizey     + (j-1) ]+  // left
 					               u[ i*sizey     + (j+1) ]+  // right

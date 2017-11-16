@@ -10,3 +10,6 @@ TODO List:
 -Pontos a ter atenção: http://www.thegeekstuff.com/2015/01/c-cpp-code-optimization/
 https://medium.com/tech-vision/parallel-matrix-multiplication-c-parallel-processing-5e3aadb36f27
 atençao ao ponto 3
+
+
+qsub -qmei -lnodes=1:r662:ppn=5,walltime=30:00 ./run.sh

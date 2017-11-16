@@ -1,0 +1,1 @@
+calor.o: src/calor.c

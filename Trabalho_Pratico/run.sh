@@ -7,8 +7,10 @@ echo "Compiling..."
 #export SEQUENTIAL=yes
 #export PARALLEL=yes
 
-gcc PCP/git/CPD/Trabalho_Pratico/src/calor.c -O3 -fopenmp -Wall -Wextra -std=c99 -finline -Wno-unused-parameter -o PCP/git/CPD/Trabalho_Pratico/src/calor
+gcc PCP/PCPWork1/Trabalho_Pratico/src/calor.c -O3 -fopenmp -Wall -Wextra -std=c99 -finline -Wno-unused-parameter -o PCP/PCPWork1/Trabalho_Pratico/src/calor
 
 echo "Running the tests"
 
-./PCP/git/CPD/Trabalho_Pratico/src/calor
+./PCP/PCPWork1/Trabalho_Pratico/src/calor
+
+

@@ -4,9 +4,9 @@
 #include <omp.h>
 #include <string.h>
 #define min(a,b) ( ((a) < (b)) ? (a) : (b) )
-#define M 10000
-#define N 10000
-#define ITER 5000
+#define M 1000
+#define N 1000
+#define ITER 50
 double G1[N][N];
 double G2[N][N];
 double wtime=0;

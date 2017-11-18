@@ -74,9 +74,9 @@ return (omp_get_wtime() - wtime);
 double iterationBlocks(){
 int nbx, bx, nby, by;
   nbx = omp_get_max_threads();      // NR de threads 
-  bx = M/nbx + ((M%nbx) ? 1 : 0); // linha do bloco (quantas linhas fica cada thread)
-  nby = 1;                // Nr de chunks por thread          
-  by = N/nby;             // coluna do bloco (quantas tem cada bloco)
+  bx = M/nbx + ((M%nbx) ? 1 : 0);   // linha do bloco (quantas linhas fica cada bloco)
+  nby = nbx;                        // Nr de chunks por thread          
+  by = N/nby;                       // coluna do bloco (quantas tem cada bloco)
   int iter=0;
   wtime = omp_get_wtime();
   
@@ -134,6 +134,7 @@ double iterationParallel(){
 return (omp_get_wtime () - wtime);   
 }
 int main(int argc, char const *argv[]){
+    //printf("Matrix Size: %f bytes",M*N*sizeof(double));
     int sequential=1,parallel=1,blocks=1;
     //clock_t start_t, end_t, total_t;
     //start_t=omp_get_wtime();

@@ -10,6 +10,8 @@
 double G1[N][N];
 double G2[N][N];
 double wtime=0;
+
+
 //int NMAXTHREADS=omp_get_max_threads();
 
 long long unsigned initial_time;

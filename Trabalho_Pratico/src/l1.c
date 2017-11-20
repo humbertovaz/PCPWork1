@@ -4,8 +4,8 @@
 #include <omp.h>
 #include <string.h>
 #define min(a,b) ( ((a) < (b)) ? (a) : (b) )
-#define M 1982
-#define N 1982
+#define M 64
+#define N 64
 #define ITER 50
 double G1[N][N];
 double G2[N][N];

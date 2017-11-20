@@ -8,30 +8,32 @@ double iterationParallel(){
 
         //linhas superiores
         for(int i=1; i<N-1 && i <= iter+1; ++i){ //ver qual gasta menos < ou <=
+            aux = G2[i];
             for(int j=1; j<M-1; ++j){
                 G1[i][j] = 0.2*(
                     G2[i-1][j]+
                     G2[i+1][j]+
-                    G2[i][j-1]+
-                    G2[i][j+1]+
-                    G2[i][j]);
+                    aux[j-1]+
+                    aux[j+1]+
+                    aux[j]);
             }
 
         //linhas inferiores
-        for(int i=N-1-(iter+1); i<N-1 ; ++i){ 
+        for(int i=N-2-iter; i<N-1 ; ++i){ //i=N-1-(iter+1)
+            aux = G2[i];
             for(int j=1; j<M-1; ++j){
                 G1[i][j] = 0.2*(
                     G2[i-1][j]+
                     G2[i+1][j]+
-                    G2[i][j-1]+
-                    G2[i][j+1]+
-                    G2[i][j]);
+                    aux[j-1]+
+                    aux[j+1]+
+                    aux[j]);
             }
         }
 
         //colunas lado direito
-        for(int j=1; j<M-1 && j <= iter+1; ++j){ //ver qual gasta menos < ou <=
-            for(int i=1+iter; i<N-1; ++i){ //1 ou 2?
+        for(int j=1; j<M-1 && j <= iter+1; ++j){ 
+            for(int i=2+iter; i<N-2-iter; ++i){ 
                 G1[i][j] = 0.2*(
                     G2[i-1][j]+
                     G2[i+1][j]+
@@ -43,9 +45,8 @@ double iterationParallel(){
 
         //colunas lado esquerdo
 
-                //linhas inferiores
-        for(int j=M-1-(iter+1); j<M-1; ++j){ //ver qual gasta menos < ou <=
-            for(int i=1+iter; i<N-1; ++i){//1 ou 2
+        for(int j=M-2-iter; j<M-1; ++j){ 
+            for(int i=2+iter; i<N-2-iter; ++i){
                 G1[i][j] = 0.2*(
                     G2[i-1][j]+
                     G2[i+1][j]+
@@ -56,7 +57,7 @@ double iterationParallel(){
         }
     
 
-    //VAI REPLICAR TRABALHO NAS PONTAS EM COMUM ENTRE LINHAS E COLUNAS FALTA RESOLVER
+
     
     //Copy the G1 array calculated values back to the G2 array -> MEMCOPY
         #pragma omp parallel for

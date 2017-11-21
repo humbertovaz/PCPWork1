@@ -1,0 +1,6 @@
+Compiling...
+Running the tests
+SEQUENTIAL-Total time taken by CPU: 0.198775
+PARALLEL- Total time taken by CPU: 0.007845
+PARALLEL w/ Blocks- Total time taken by CPU: 0.008380
+Done!

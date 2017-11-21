@@ -4,8 +4,8 @@
 #include <omp.h>
 #include <string.h>
 #define min(a,b) ( ((a) < (b)) ? (a) : (b) )
-#define M 1982
-#define N 1982
+#define M 64
+#define N 64
 #define ITER 50
 double G1[N][N];
 double G2[N][N];
@@ -79,21 +79,19 @@ int nbx, bx, nby, by;
   by = N/nby;                       // coluna do bloco (quantas tem cada bloco)
   int iter=0;
   wtime = omp_get_wtime();
-  double aux[];
+  
     while(iter<ITER){
         #pragma omp parallel for  //reduction(+:sum) private(diff) //  i -> linhas; j colunas; ii-> chunk atual de linhas; jj-> chunk atual  de colunas
         for (int ii=0; ii<nbx; ii++)  // Criar #nbx threads    
             for (int jj=0; jj<nby; jj++)   // Limitar chunksize por thread
                 for (int i=1+ii*bx; i<=min((ii+1)*bx, M-2); i++)       // cada i é uma linha do bloco
-                   aux = G2[i];
                     for (int j=1+jj*by; j<=min((jj+1)*by, N-2); j++) {    // cada j é uma coluna do bloco
-                         G1[i][j]=0.2*( 
-                            G2[i-1][j]+
-                            G2[i+1][j]+
-                            aux[j-1]+
-                            aux[j+1]+
-                            aux[j]);
-            }   
+                    G1[i][j]= 0.2 * (G2[i][j]+ //itself  
+                                    G2[i][j-1]+  // left
+                                    G2[i][j+1]+  // right
+                                    G2[(i-1)][j]+  // top
+                                    G2[(i+1)][j]); // bottom
+                    }
                 //Copiar de volta para a Memória
             #pragma omp parallel for
             for(int i=0; i<N;++i)
@@ -106,7 +104,7 @@ return (omp_get_wtime() - wtime);
 }
 double iterationParallel(){
     int iter=0;
-    double aux[M];
+    double aux[M]
     wtime = omp_get_wtime ();
     while (iter < ITER){
         #pragma omp parallel for num_threads(omp_get_max_threads()) private(aux)

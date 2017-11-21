@@ -74,7 +74,14 @@ void iterationSequentialCopIter(){
             for(int j=1;j<M-1;++j)
                 G2[i][j]=G1[i][j];          
 
-    }              
+    } //APAGAR
+    for(int i=0; i<N;++i){
+                for(int j=0;j<M;++j){
+                 printf(" %lf ", G2[i][j]);   
+                }
+                printf("\n");
+            }
+            
 }
 void iterationSequentialCopSwap(){
     int iter=0;
@@ -94,10 +101,14 @@ void iterationSequentialCopSwap(){
     temp = G2;
     G2 = G1;
     G1 = temp;
-    
-
-
-    }              
+    }//APAGAR
+    for(int i=0; i<N;++i){
+                for(int j=0;j<M;++j){
+                 printf(" %lf ", G2[i][j]);   
+                }
+                printf("\n");
+            }
+              
 }
 void iterationSequentialCopMem(){
     int iter=0;
@@ -113,19 +124,28 @@ void iterationSequentialCopMem(){
             }   
         }
         ++iter;          
-        memcpy(G2,G1,sizeof(double)*N*M);
-    }              
+        for(int a=0;a<M;a++){
+            memcpy(&(G2[a]),&(G1[a]),sizeof(**G2));
+        }
+        //memcpy(G2,G1,sizeof(double)*(N*M));
+    } //APAGAR
+    for(int i=0; i<N;++i){
+                for(int j=0;j<M;++j){
+                 printf(" %lf ", G2[i][j]);   
+                }
+                printf("\n");
+            }
+              
 }
 
 
-double iterationBlocks(){
+void iterationBlocks(){
 int nbx, bx, nby, by;
   nbx = THREADS;      // NR de threads 
   bx = M/nbx + ((M%nbx) ? 1 : 0);   // linha do bloco (quantas linhas fica cada bloco)
   nby = nbx;                        // Nr de chunks por thread          
   by = N/nby;                       // coluna do bloco (quantas tem cada bloco)
   int iter=0;
-  double acum=0;
     while(iter<ITER){
         #pragma omp parallel for  //reduction(+:sum) private(diff) //  i -> linhas; j colunas; ii-> chunk atual de linhas; jj-> chunk atual  de colunas
         for (int ii=0; ii<nbx; ii++){  // Criar #nbx threads    
@@ -158,7 +178,6 @@ int nbx, bx, nby, by;
                 printf("\n");
             }
 
-return acum;
 }
 void iterationParallel(){
     int iter=0;

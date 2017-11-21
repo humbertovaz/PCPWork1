@@ -1,16 +1,18 @@
 #!/bin/sh
 
-module load gcc/5.3.0
 
-echo "Compiling..."
 
-#export SEQUENTIAL=yes
-#export PARALLEL=yes
+echo "1- Sequencial 2 - Paralelo 3 - Blocos"
+read MODE
+echo "NR de iteracoes: 1 10 100 1000 10000"
+read ITER
+echo "Insert Threads"
+read THREADS
+echo "Insert Lines"
+read LINES
+echo "Insert COLLUMNS"
+read COLLUMNS
 
-gcc PCP/PCPWork1/Trabalho_Pratico/src/calor.c -O3 -fopenmp -Wall -Wextra -std=c99 -finline -Wno-unused-parameter -o PCP/PCPWork1/Trabalho_Pratico/src/calor
-
-echo "Running the tests"
-
-./PCP/PCPWork1/Trabalho_Pratico/src/calor
+./Trabalho_Pratico/bin/heatplate $MODE $ITER $THREADS $LINES $COLLUMNS
 
 

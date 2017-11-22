@@ -67,20 +67,14 @@ void iterationSequentialCopIter(){
             }   
         }
         ++iter;
-        // Tentar com memcpy
-        // Testar apontadores
-        // Testar cópia iterativa
+
         for(int i=1; i<N-1;++i)
             for(int j=1;j<M-1;++j)
                 G2[i][j]=G1[i][j];          
 
-    } //APAGAR
-    for(int i=0; i<N;++i){
-                for(int j=0;j<M;++j){
-                 printf(" %lf ", G2[i][j]);   
-                }
-                printf("\n");
-            }
+    }
+   
+   
             
 }
 void iterationSequentialCopSwap(){
@@ -101,15 +95,10 @@ void iterationSequentialCopSwap(){
     temp = G2;
     G2 = G1;
     G1 = temp;
-    }//APAGAR
-    for(int i=0; i<N;++i){
-                for(int j=0;j<M;++j){
-                 printf(" %lf ", G2[i][j]);   
-                }
-                printf("\n");
-            }
+    }
               
 }
+// Está errado -> Corrigir
 void iterationSequentialCopMem(){
     int iter=0;
     while (iter < ITER){
@@ -127,14 +116,8 @@ void iterationSequentialCopMem(){
         for(int a=0;a<M;a++){
             memcpy(&(G2[a]),&(G1[a]),sizeof(**G2));
         }
-        //memcpy(G2,G1,sizeof(double)*(N*M));
-    } //APAGAR
-    for(int i=0; i<N;++i){
-                for(int j=0;j<M;++j){
-                 printf(" %lf ", G2[i][j]);   
-                }
-                printf("\n");
-            }
+        
+    } 
               
 }
 
@@ -144,7 +127,7 @@ int nbx, bx, nby, by;
   nbx = THREADS;      // NR de threads 
   bx = M/nbx + ((M%nbx) ? 1 : 0);   // linha do bloco (quantas linhas fica cada bloco)
   nby = nbx;                        // Nr de chunks por thread          
-  by = N/nby;                       // coluna do bloco (quantas tem cada bloco)
+  by = N/nby + ((N%nby) ? 1 : 0);                       // coluna do bloco (quantas tem cada bloco)
   int iter=0;
     while(iter<ITER){
         #pragma omp parallel for  //reduction(+:sum) private(diff) //  i -> linhas; j colunas; ii-> chunk atual de linhas; jj-> chunk atual  de colunas
@@ -171,13 +154,6 @@ int nbx, bx, nby, by;
                     for(int j=1;j<M-1;++j)
                         G2[i][j]=G1[i][j];          
             }
-            for(int i=0; i<N;++i){
-                for(int j=0;j<M;++j){
-                 printf(" %lf ", G2[i][j]);   
-                }
-                printf("\n");
-            }
-
 }
 void iterationParallel(){
     int iter=0;
@@ -202,12 +178,6 @@ void iterationParallel(){
             }
     ++iter;
     }
-            for(int i=0; i<N;++i){
-                for(int j=0;j<M;++j){
-                 printf(" %lf ", G2[i][j]);   
-                }
-                printf("\n");
-            }
 }
 void init(){
     G1 = (double **) malloc(N*sizeof(double));
@@ -230,7 +200,7 @@ int main(int argc, char* argv []){
         if(mode==1){
             tempo = omp_get_wtime ();
             iterationSequentialCopIter();
-            tempo = omp_get_wtime () - tempo;
+            tempo = omp_get_wtime () -i tempo;
             printf("Sequential Time ITERATION: %lf \n",tempo);
         }
         else if (mode==2){

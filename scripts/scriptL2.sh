@@ -2,7 +2,7 @@
 export ITER=1
 export LINES=20000
 export COLLUMNS=20000
-
+module load gcc/4.9.0
 gcc Trabalho_Pratico/src/heatplate.c -O3 -fopenmp -Wall -Wextra -std=c99 -finline -Wno-unused-parameter -o Trabalho_Pratico/bin/heatplate
 
 ######################## SEQUENCIAL ########################

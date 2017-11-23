@@ -75,7 +75,7 @@ do
     (( n-- ))
 done
 
-export OMP_MAX_NUM_THREADS=4
+export OMP_MAX_NUM_THREADS=40
 echo "40 Threads"
 n=5
 while [ $n -gt 0 ]

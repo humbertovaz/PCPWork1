@@ -7,30 +7,30 @@ cd PCPWork1
 gcc Trabalho_Pratico/src/heatplate.c -O3 -fopenmp -Wall -Wextra -std=c99 -finline -Wno-unused-parameter -o Trabalho_Pratico/bin/heatplate
 
 ######################## SEQUENCIAL ########################
-export MODE=1 
-echo "SEQUENTIAL NORMAL:" 
-n=5
-while [ $n -gt 0 ]
-do
-    ./Trabalho_Pratico/bin/heatplate $MODE $ITER $LINES $COLLUMNS
-    (( n-- ))
-done
+#export MODE=1 
+#echo "SEQUENTIAL NORMAL:" 
+#n=5
+#while [ $n -gt 0 ]
+#do
+#    ./Trabalho_Pratico/bin/heatplate $MODE $ITER $LINES $COLLUMNS
+#    (( n-- ))
+#done
 
 ######################## SEQUENCIAL COM SWAP ##################
-export MODE=2
-echo "SEQUENCIAL COM SWAP"
+#export MODE=2
+#echo "SEQUENCIAL COM SWAP"
+#
+#n=5
+#while [ $n -gt 0 ]
+#do
+#    ./Trabalho_Pratico/bin/heatplate $MODE $ITER $LINES $COLLUMNS
+#   (( n-- ))
+#done
 
-n=5
-while [ $n -gt 0 ]
-do
-    ./Trabalho_Pratico/bin/heatplate $MODE $ITER $LINES $COLLUMNS
-    (( n-- ))
-done
+####################### PARALELO COM SWAP ####################
 
-####################### PARALELO COM BLOCOS ####################
-
-export MODE=3
-echo "PARALELO COM BLOCOS:"
+export MODE=4
+echo "PARALELO COM SWAP"
 export OMP_NUM_THREADS=2
 echo "2 Threads"
 n=5

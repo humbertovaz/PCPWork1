@@ -72,7 +72,10 @@ void iterationSequentialCopIter(){
             for(int j=1;j<M-1;++j)
                 G2[i][j]=G1[i][j];          
 
-    }              
+    }
+   
+   
+            
 }
 void iterationSequentialCopSwap(){
     int iter=0;
@@ -92,8 +95,14 @@ void iterationSequentialCopSwap(){
     temp = G2;
     G2 = G1;
     G1 = temp;
+<<<<<<< HEAD
+    }
+              
+=======
     }              
+>>>>>>> origin/dev
 }
+// Está errado -> Corrigir
 void iterationSequentialCopMem(){
     int iter=0;
     while (iter < ITER){
@@ -108,11 +117,20 @@ void iterationSequentialCopMem(){
             }   
         }
         ++iter;          
-        memcpy(G2,G1,sizeof(double)*N*M);
-    }              
+        for(int a=0;a<M;a++){
+            memcpy(&(G2[a]),&(G1[a]),sizeof(**G2));
+        }
+        
+    } 
+              
 }
 
+<<<<<<< HEAD
+
+void iterationBlocks(){
+=======
 void swapBlocks(){
+>>>>>>> origin/dev
 int nbx, bx, nby, by;
   nbx = omp_get_max_threads();      // NR de threads 
   nbx=2;
@@ -120,9 +138,12 @@ int nbx, bx, nby, by;
   nby = nbx;                        // Nr de chunks por thread          
   by = N/nby + ((N%nby) ? 1 : 0);                       // coluna do bloco (quantas tem cada bloco)
   int iter=0;
+<<<<<<< HEAD
+=======
   wtime = omp_get_wtime();
   int i,j,ii,jj;
   double** temp;
+>>>>>>> origin/dev
     while(iter<ITER){
         #pragma omp parallel for  
         for (ii=0; ii<nbx; ii++)  // Criar #nbx threads    
@@ -136,8 +157,8 @@ int nbx, bx, nby, by;
                             G2[i][j+1]+
                             G2[i][j]);
             }   
-                //Copiar de volta para a Memória
-      temp = G2;
+                //Copiar de volta para a Memória  
+    temp = G2;
     G2 = G1;
     G1 = temp;
     ++iter;
@@ -145,7 +166,39 @@ int nbx, bx, nby, by;
       
 }
 
-
+void iterationParallelSwapCpy(){
+    int iter=0;
+    while (iter < ITER){
+        wtime = omp_get_wtime ();
+        #pragma omp parallel for
+        for(int i=1; i<N-1; ++i){ 
+            for(int j=1; j<M-1; ++j){
+                G1[i][j] = 0.2*(
+                    G2[i-1][j]+
+                    G2[i+1][j]+
+                    G2[i][j-1]+
+                    G2[i][j+1]+
+                    G2[i][j]);
+            }
+        }
+<<<<<<< HEAD
+            ++iter;
+    }  
+           
+            //Copiar de volta para a Memória
+            #pragma omp parallel for
+            for(int i=1; i<N-1;++i){
+                    for(int j=1;j<M-1;++j)
+                        G2[i][j]=G1[i][j];          
+            }
+=======
+    temp = G2;
+    G2 = G1;
+    G1 = temp;   
+    ++iter;
+    }
+>>>>>>> origin/dev
+}
 void iterationParallel(){
     int iter=0;
     while (iter < ITER){
@@ -169,12 +222,6 @@ void iterationParallel(){
             }
     ++iter;
     }
-            for(int i=0; i<N;++i){
-                for(int j=0;j<M;++j){
-                 printf(" %lf ", G2[i][j]);   
-                }
-                printf("\n");
-            }
 }
 void init(){
     G1 = (double **) malloc(N*sizeof(double));
@@ -196,8 +243,13 @@ int main(int argc, char* argv []){
         if(mode==1){
             tempo = omp_get_wtime ();
             iterationSequentialCopIter();
+<<<<<<< HEAD
+            tempo = omp_get_wtime () -i tempo;
+            printf("Sequential Time ITERATION: %lf \n",tempo);
+=======
             tempo = omp_get_wtime () - tempo;
             printf("Tempo SEQUENTIAL NORMAL: %lf \n",tempo);
+>>>>>>> origin/dev
         }
         else if (mode==2){
             tempo = omp_get_wtime ();
@@ -207,10 +259,23 @@ int main(int argc, char* argv []){
         }
         else if (mode == 3){
             tempo = omp_get_wtime ();
+            iterationParallel();
+            tempo = omp_get_wtime () - tempo;
+            printf("Tempo PARALELA ITERATIVA: %lf \n",tempo);
+        }
+        else if (mode == 4){
+            tempo = omp_get_wtime ();
+            iterationParallelSwapCpy();
+            tempo = omp_get_wtime () - tempo;
+            printf("Tempo PARALELA ITERATIVA: %lf \n",tempo);
+        }
+        else if (mode == 5){
+            tempo = omp_get_wtime ();
             swapBlocks();
             tempo = omp_get_wtime () - tempo;
-            printf("Tempo SWAP BLOCKS: %lf \n",tempo);
+            printf("Tempo PARALELA ITERATIVA: %lf \n",tempo);
         }
+
     }
 return 0;
 }
